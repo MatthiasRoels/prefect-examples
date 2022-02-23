@@ -132,5 +132,9 @@ Thumbs.db
 # profiling data
 .prof
 
+# custom ignores
+hydra/outputs/*
+
+
 
 # End of https://www.toptal.com/developers/gitignore/api/osx,python
