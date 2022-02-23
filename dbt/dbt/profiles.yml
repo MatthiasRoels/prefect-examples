@@ -1,0 +1,15 @@
+config:
+  send_anonymous_usage_stats: False
+
+tutorial:
+  target: dev  # "{{ env_var('TARGET') }}"
+  outputs:
+    dev:
+      type: postgres
+      threads: 1
+      host: host.docker.internal  # "{{ env_var('DBT_DBHOST') }}"
+      port: 5432
+      user: dbt  # "{{ env_var('DBT_USER') }}"
+      pass: password  # "{{ env_var('DBT_PASSWORD') }}"
+      dbname: dbt  # "{{ env_var('DBT_DBNAME') }}"
+      schema: warehouse  # "{{ env_var('SCHEMA') }}"
