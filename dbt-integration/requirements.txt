@@ -60,6 +60,8 @@ idna==3.3
     #   requests
 importlib-metadata==4.11.1
     # via jsonschema
+importlib-resources==5.4.0
+    # via prefect
 isodate==0.6.1
     # via
     #   agate
@@ -111,7 +113,7 @@ partd==1.2.0
     # via dask
 pendulum==2.1.2
     # via prefect
-prefect==0.15.13
+prefect==1.0.0
     # via -r requirements.in
 psutil==5.9.0
     # via distributed
@@ -197,7 +199,9 @@ werkzeug==2.0.3
 zict==2.0.0
     # via distributed
 zipp==3.7.0
-    # via importlib-metadata
+    # via
+    #   importlib-metadata
+    #   importlib-resources
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
