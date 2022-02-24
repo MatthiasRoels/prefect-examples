@@ -7,7 +7,7 @@ tutorial:
     dev:
       type: postgres
       threads: 1
-      host: host.docker.internal  # "{{ env_var('DBT_DBHOST') }}"
+      host: localhost #host.docker.internal  # "{{ env_var('DBT_DBHOST') }}"
       port: 5432
       user: dbt  # "{{ env_var('DBT_USER') }}"
       pass: password  # "{{ env_var('DBT_PASSWORD') }}"
