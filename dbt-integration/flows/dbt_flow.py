@@ -3,6 +3,8 @@ import os
 from prefect import context, task, Flow, Parameter
 from prefect.triggers import all_finished
 from prefect.tasks.dbt import DbtShellTask
+from prefect.storage import Docker
+from prefect.run_configs import DockerRun
 
 
 def create_dbt_task() -> DbtShellTask:
@@ -98,7 +100,6 @@ flow = create_dbt_flow("dbt test flow")
 if __name__ == "__main__":
 
     docker_storage = Docker(
-        dockerfile="./Dockerfile",
         image_name="prefect-dbt-demo",
         image_tag="latest",
         local_image=True,
@@ -109,6 +110,6 @@ if __name__ == "__main__":
     flow.storage = docker_storage
     docker_storage.add_flow(flow)
 
-    flow.run_config = DockerRun()
+    flow.run_config = DockerRun(image="prefect-dbt-demo:latest")
 
     flow.register(project_name="tutorials", build=False)
