@@ -1,13 +1,20 @@
-import hydra
+from hydra import initialize, compose
 from omegaconf import DictConfig, OmegaConf
-from prefect import flow, task
+from prefect import Flow, task
 
 
-@hydra.main(config_path="conf", config_name="config")
-@flow
-def test_flow(cfg: DictConfig) -> None:
-    print("test")
-    print(OmegaConf.to_yaml(cfg))
+def create_flow(flow_name: str) -> Flow:
+    initialize(config_path="conf")
+    cfg = compose("config.yaml", overrides=["db=postgres"])
+
+    with Flow(flow_name) as flow:
+        print(OmegaConf.to_yaml(cfg))
+
+    return flow
+
+
+flow = create_flow("test_flow")
+
 
 if __name__ == "__main__":
-    test_flow()
+    flow.run()
