@@ -1,4 +1,3 @@
-import json
 import os
 
 from prefect import context, task, Flow, Parameter
@@ -50,10 +49,6 @@ def build_dbt_command(
     if full_refresh:
         dbt_cmd += " --full-refresh"
 
-    logger = context.get("logger")
-
-    logger.info(f"dbt build args: {dbt_cmd}")
-
     return dbt_cmd.strip()
 
 
@@ -102,14 +97,18 @@ flow = create_dbt_flow("dbt test flow")
 
 if __name__ == "__main__":
 
-    flow.storage = Docker(
+    docker_storage = Docker(
         dockerfile="./Dockerfile",
         image_name="prefect-dbt-demo",
-        # image_tag="latest",
+        image_tag="latest",
         local_image=True,
         stored_as_script=True,
         path="/opt/prefect/flows/dbt_flow.py",
     )
+
+    flow.storage = docker_storage
+    docker_storage.add_flow(flow)
+
     flow.run_config = DockerRun()
 
-    flow.register()
+    flow.register(project_name="tutorials", build=False)
