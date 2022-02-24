@@ -134,6 +134,7 @@ Thumbs.db
 
 # custom ignores
 hydra/outputs/*
+*/outputs/*
 
 
 
