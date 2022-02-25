@@ -2,3 +2,11 @@ defaults:
   - db: mysql
   - ui: full
   - schema: school
+
+catalog:
+  data_source:
+    result_class: LocalResult
+    serializer: JSONSerializer
+    location: "{date:%A}/{task_name}.prefect"
+    extra_args:
+      dir: "/Users/${oc.env:USER}/${oc.env:PREFECT_DIR}"
