@@ -96,20 +96,20 @@ def create_dbt_flow(flow_name: str) -> Flow:
 
 flow = create_dbt_flow("dbt test flow")
 
+docker_storage = Docker(
+    image_name="prefect-dbt-demo",
+    image_tag="latest",
+    stored_as_script=True,
+    path="/opt/prefect/flows/dbt_flow.py",
+)
+
+flow.storage = docker_storage
+flow.run_config = DockerRun(
+    image="prefect-dbt-demo:latest",
+    env={"DBT_DBHOST": "host.docker.internal"}
+)
+
 
 if __name__ == "__main__":
-
-    docker_storage = Docker(
-        image_name="prefect-dbt-demo",
-        image_tag="latest",
-        local_image=True,
-        stored_as_script=True,
-        path="/opt/prefect/flows/dbt_flow.py",
-    )
-
-    flow.storage = docker_storage
     docker_storage.add_flow(flow)
-
-    flow.run_config = DockerRun(image="prefect-dbt-demo:latest")
-
     flow.register(project_name="tutorials", build=False)

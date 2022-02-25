@@ -30,18 +30,10 @@ WORKDIR $PREFECT_HOME
 
 # Make sure to be able to run as non-root
 RUN useradd -m prefect-user && \
-    # make it so that the directories in $PREFECT_HOME (including $PREFECT_HOME)
-    # are world readable (and executable)
-    find $PREFECT_HOME -type d -exec chmod -R 0755 {} \; && \
-    # make it so that the files in $PREFECT_HOME are world readable
-    find $PREFECT_HOME -type f -exec chmod -R 0644 {} \; && \
+    chown -R prefect-user:root $PREFECT_HOME && \
     # create directories for dbt and Prefect to store its output
     # and make sure they have the correct permissions
-    mkdir -p $PREFECT_HOME/dbt/target && chmod -R 0777 $PREFECT_HOME/dbt/target && \
-    mkdir -p $PREFECT_HOME/dbt/logs && chmod -R 0777 $PREFECT_HOME/dbt/logs && \
-    chmod 777 $PREFECT_HOME && \
-    # Make sure the dbt profiles have the correct permissions:
-    chmod 666 $PREFECT_HOME/dbt/profiles.yml
+    mkdir -p $PREFECT_HOME/dbt/target && \
+    mkdir -p $PREFECT_HOME/dbt/logs
 
 USER prefect-user
-ENTRYPOINT /bin/sh -c bash
